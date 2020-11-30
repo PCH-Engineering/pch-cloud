@@ -1,0 +1,27 @@
+{
+    "host":"pchcloud",
+    "username": "demo",
+    "password": "password",
+    "data": [
+        {
+            "deviceHostId":"Demo IoT.ub",
+            "deviceId":"PCH1232-2017190014",
+            "scalars": [
+                {
+                    "name":"P index 1",
+                    "scalarIndex":1
+                }
+            ]
+        },
+        {
+            "deviceHostId":"Demo IoT.ub",
+            "deviceId":"PCH1232-2017190015",
+            "scalars": [
+                {
+                    "name":"P 2",
+                    "scalarIndex":0
+                }
+            ]
+        }
+    ]
+}

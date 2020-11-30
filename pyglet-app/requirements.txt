@@ -1,0 +1,10 @@
+certifi==2019.9.11
+chardet==3.0.4
+future==0.18.2
+idna==2.8
+pprint==0.1
+pyglet==1.4.6
+python-dateutil==2.8.1
+requests==2.22.0
+six==1.13.0
+urllib3==1.25.7
