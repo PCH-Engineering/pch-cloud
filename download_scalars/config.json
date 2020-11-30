@@ -1,0 +1,6 @@
+{
+    "host":"pchcloud",
+    "username": "demo",
+    "password": "password",
+    "query_passed_days":1
+}
