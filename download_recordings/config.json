@@ -1,0 +1,8 @@
+{
+    "host":"pchcloud",
+    "username": "demo",
+    "password": "password",
+    "delete_on_server": false,
+    "query_passed_days":1,
+    "download_path":"downloads"
+}

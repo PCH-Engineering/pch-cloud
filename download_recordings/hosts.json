@@ -1,0 +1,22 @@
+{
+    "local": {
+        "backend": "http://localhost:5000/api",
+        "usermanager": "http://localhost:5020/api",
+        "devicemanager": "http://localhost:5030/api" 
+    },
+    "pchcloud2": {
+        "backend": "https://pchcloud2.pch-engineering.dk/backend",
+        "usermanager": "https://pchcloud2.pch-engineering.dk/usermanager",
+        "devicemanager": "https://pchcloud2.pch-engineering.dk/devicemanager" 
+    },
+    "pchcloud": {
+        "backend": "https://pchcloud.pch-engineering.dk/backend",
+        "usermanager": "https://pchcloud.pch-engineering.dk/usermanager",
+        "devicemanager": "https://pchcloud.pch-engineering.dk/devicemanager"
+    },
+    "pchedge": {
+        "backend": "https://172.19.1.181/backend",
+        "usermanager": "https://172.19.1.181/usermanager",
+        "devicemanager": "https://172.19.1.181/devicemanager"
+    }
+}
