@@ -1,0 +1,14 @@
+{
+    "host":"pchcloud",
+    "username": "demo",
+    "password": "password",
+    "delete_on_server": true,
+    "query_passed_days":500,
+    "download_path":"../downloaded_spectra",
+    "spectrum_name":"FFT 0-2000 Hz",
+    "devices":["all"],
+    "deviceHostIds":["DemoIoT.mbfoexiq"],
+    "time_delay":0.5
+    
+
+}

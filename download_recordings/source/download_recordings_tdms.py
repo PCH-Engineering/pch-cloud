@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # gets all time recordings from the last 5 days
     # get current time 
     
-    with open('config.json') as config_file:
+    with open('../config/config.json') as config_file:
         config = json.load(config_file)
 
         print("Configuration: ")
@@ -45,7 +45,7 @@ if __name__ == "__main__":
             # get recordings in interval
             recordings = timerecording.get_recordings_by_device(host, token, deviceHostId, deviceId, start, end)
             
-            if recordings is None or len(recordings) is 0:
+            if recordings==None or len(recordings) == 0:
                 print(f'No recordings for device: {deviceHostId}.{deviceId}', "start: ", start, "end:", end)
                 continue
             # get the recording data

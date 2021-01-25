@@ -39,7 +39,7 @@ def query_recordings(host, session_token, device, year, month, count):
     recordings = r.json()
     return recordings
 
-def supported_export_formats():
+def supported_export_formats(host,token):
     r = requests.get(url.backend(host)+"/timerecording/supported_export_formats", verify=False)
     if r.status_code != requests.codes.ok:
         print(supported_export_formats.__name__ + " Failed", r.status_code, r.reason)
@@ -50,7 +50,7 @@ def supported_export_formats():
 def export(host, session_token, deviceHostId, deviceId, recording_id, formatExt, path, overwrite=False):
 
     filename = recording_id.split('.')[-1]
-    local_path = os.path.join(path, deviceHostId, deviceId)
+    local_path = os.path.join(path, host,"tdms", deviceHostId, deviceId)
     if not os.path.isdir(local_path): 
         os.makedirs(local_path)
     local_filename =os.path.join(local_path, filename+"."+formatExt)
@@ -101,6 +101,44 @@ def parameter_dataset(host, session_token,  deviceHostId, deviceId, recording_id
         return None
     raw = r.json()
     return raw
+    #OQ
+def get_spectrum_names(host,session_token):    
+    r=requests.get(url.backend(host)+"/TimeRecording/recording/dataprocessing/setup/spectra",data={'session_token': session_token})
+    if r.status_code != requests.codes.ok:
+        print(parameter_dataset.__name__ + " Failed", r.status_code, r.reason)
+        return None
+    spectra_names=r.json()
+    return spectra_names  
+    #OQ 
+def download_spectrum(host, session_token,  deviceHostId, deviceId, recording_id, spectrum_setup_name, channel=1,path="..\\spectra",overwrite=False):
+    print(recording_id)
+    #recordingid is a sort of timestamp
+    filename = recording_id.split('.')[-1]
+    
+    local_path = os.path.join(path,host,spectrum_setup_name, deviceHostId, deviceId,"channel_"+str(channel+1))
+    formatExt="json"
+    if not os.path.isdir(local_path): 
+        os.makedirs(local_path)
+
+    local_filename =os.path.join(local_path, filename+"."+formatExt)  
+    #print( local_filename)  
+    if (not overwrite) and os.path.isfile(local_filename):
+        return local_filename, False
+    
+    #Make request package
+    data={'session_token': session_token, 'deviceHostId':deviceHostId, 'deviceId':deviceId,'recordingId':recording_id,'channel':channel,'name':spectrum_setup_name}
+    print(data)
+    #Send the request
+    r = requests.get(url.backend(host)+"/TimeRecording/recording/dataprocessing/spectrum", data=data, verify=False)
+    if r.status_code != requests.codes.ok:
+          print(parameter_dataset.__name__ + " Failed", r.status_code, r.reason)
+          return local_filename+"FAIL" ,False
+    spectra=r.json()
+    with open(local_filename, 'w') as f:
+        f.write(json.dumps(spectra))
+        f.close()   
+    return local_filename, True 
+  
 
 
 def delete_recording(host, session_token,  deviceHostId, deviceId, recording_id):

@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 
 import dateutil.parser
 import os
+import time
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -18,7 +19,7 @@ if __name__ == "__main__":
     # gets all time recordings from the last 5 days
     # get current time 
     
-    with open('config.json') as config_file:
+    with open('..\config\config.json') as config_file:
         config = json.load(config_file)
 
         print("Configuration: ")
@@ -30,7 +31,7 @@ if __name__ == "__main__":
         # set timerange  
         end = datetime.utcnow()
         start = end - timedelta(days=query_passed_days)
-    
+        download_path=config['download_path']
         # login 
         session = usermanager.login(host, config["username"], config["password"])
         token = session['token']
@@ -42,6 +43,7 @@ if __name__ == "__main__":
 
             deviceHostId = device['deviceHostId']
             deviceId = device['deviceId']
+            
             # get recordings in interval
             recordings = timerecording.get_recordings_by_device(host, token, deviceHostId, deviceId, start, end)
             
@@ -58,13 +60,24 @@ if __name__ == "__main__":
                     print(f'name: {parameter["name"]}, value: {parameter["value"]} {parameter["unit"]}')
                 for channel in range(numberOfChannels):
                     # get data
-                    data = timerecording.raw_data_by_channel(host, token, deviceHostId, deviceId, recordingInfo['id'], channel+1)
+                    recording_id=recordingInfo['id']
+                    data = timerecording.raw_data_by_channel(host, token, deviceHostId, deviceId,  recording_id, channel+1)
                     # do something with the data
+                    local_path = os.path.join(download_path,host, deviceHostId, deviceId,"channel_"+str(channel+1))
+                    os.makedirs(local_path,exist_ok=True)
+                    filename = recording_id.split('.')[-1]
+                    formatExt="json"
+                    local_filename =os.path.join(local_path, filename+"."+formatExt) 
+                    
+                    with open(local_filename, 'w') as f:                        
+                        f.write(json.dumps(data))
+                        f.close()
+
                     numberOfSamples = len(data['samples'])
                     unit = data['unit']
-
-
                     print(f'Got data, device: {deviceHostId}.{deviceId}, channel: {channel+1}, numberOfSamples: {numberOfSamples},  unit: {unit}')
+                    time_delay=0.2     
+                    time.sleep(time_delay)    
             
                 # should we delete the file on the server ?
                 if delete_on_server :

@@ -1,6 +1,6 @@
 import json
 
-with open('hosts.json') as f:
+with open('../config/hosts.json') as f:
     hosts = json.load(f)
 
 def service_url(host, service):

@@ -1,9 +1,10 @@
 # Python script for downloading time recordings for all devices within a spefic time range
 
-There are two main scripts :
+There are three main scripts :
 
 * download_recordings.py
 * download_recordings_tdms.py
+* download_spectra.py
 
 ### Script 1: download_recordings.py
 
@@ -15,17 +16,37 @@ There are two main scripts :
 
 3. For each device it will query for any recordings within a time range (default is the last day). If any then download and (optionally) delete the recoding on the server
 
+
 ### Script 2: download_recordings_tdms.py
 
 **download_recordings_tdms.py** is an example of an python script for automatated download in *National Intstrument tdms* format, save, and delete of time recordings. 
 
-The downloaded files are saved on the local disk in the path specified by the "download_path" in the config.json  
+The downloaded files are saved on the local disk in the path specified by the "download_path" in the config/config.json  
 
 1. The script will logon to pchcloud or local server.
 
 2. Query for devices
 
 3. For each device it will query for any recordings within a time range (default is the last day). If any then download in *tdms* format, save the file and (optionally) delete the recoding on the server
+
+4. The downloaded files are json files where the filename refers to the recording time YYYYMMDDHHSS the delta is time between samples in seconds and the "samples" is the recorded samples.
+
+### Script 3.
+
+**download_spectra.py** is an example of a python script for automated download of spectra
+    
+The downloaded spectrum files are saved into the local disk in the path specified in the "download_path" in the "config/spectrum_config.json" in the config directory.
+
+1. Check the spectrum_config.json in the config folder (see below)
+
+2. You must setup which type of spectrum you want, you can get a list of available spectra by calling the script get_spectrum_names.py 
+    (this will store available names and other setup info in three .json files into the download_path directory)
+
+3. The script will download spectra in the selected interval and on selected deviceHosts   
+
+4. The downloaded files are json files and contains other information about the spectrum you should look for "values" to get the bins in some case there are two spectra in the same file  the file-names correspond to the time of creation of the time buffer. YYYYMMDDHHSS.json
+
+NOTE: since the spectra are created by the cloud in case a spectrum with the requested setup is not already made for the requested recording we are recommending to use at least 0.5 seconds for time delay (use the time_delay setting in seconds)
 
 
 ## Install
@@ -144,6 +165,36 @@ In order for the script to run - 2 files are required. The files must be locatat
     * "query_passed_days", query time range number of days back from current time
     * "download_path", local download path, currently used by the download_recordings_tdms.py 
 
+3. **spectrum_config.json** is for configurtion settings
+
+    ``` 
+    {
+        "host":"local",
+        "username": "local",
+        "password": "pass",
+        "delete_on_server": false,
+        "query_passed_days":7,
+        "download_path":"../downloaded_spectra",
+        "spectrum_name":"FFT 0-2000 Hz",
+        "devices":["all"],
+        "deviceHostIds":["all"],
+        "time_delay":1 
+    }
+
+
+    ``` 
+    * "host" sets the server connections from the list of known hosts in the **hosts.json* file
+    * "username" and "password" is the account login. If connecting to local the default username is 'local' and the password is 'pass'
+    * "delete_on_server", if true SPECTRA AND the TIME RECORDINGS WILL BE DELETED on the server 
+    * "query_passed_days", query time range number of days back from current time
+    * "query_passed_days", query time range number of days back from current time
+    * "download_path", local download path, currently used by the download_spectra.py 
+    * "spectrum_name", The spectrum setup name to download, use the download_spectrum_names.py script to download the available spectrum setup names
+    * "devices", an array of devices to download This is not implemented, (You must change the code in order to get it to work)
+    * "deviceHostIds", an Array of device host ID's to download from. If first entry is set to "all" then all deviceHosts will be downloaded
+    * "time_delay" number of seconds between each spectrum. This parameter MUST be set >0.5 in order to not overload the server.
+
+
 
 ## Execute python script
 py ./download_recordings.py
@@ -151,6 +202,11 @@ py ./download_recordings.py
 or 
 
 py ./download_recordings_tdms.py
+
+or
+
+py ./download_spectra.py
+
 
 
 
