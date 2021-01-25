@@ -31,7 +31,7 @@ The downloaded files are saved on the local disk in the path specified by the "d
 
 4. The downloaded files are json files where the filename refers to the recording time YYYYMMDDHHSS the delta is time between samples in seconds and the "samples" is the recorded samples.
 
-### Script 3.
+### Script 3. download_spectra.py
 
 **download_spectra.py** is an example of a python script for automated download of spectra
     
@@ -44,9 +44,9 @@ The downloaded spectrum files are saved into the local disk in the path specifie
 
 3. The script will download spectra in the selected interval and on selected deviceHosts   
 
-4. The downloaded files are json files and contains other information about the spectrum you should look for "values" to get the bins in some case there are two spectra in the same file  the file-names correspond to the time of creation of the time buffer. YYYYMMDDHHSS.json
+4. The downloaded files are json files and contains other information about the spectrum you should look for "values" to get the bins in some case there are two spectra in the same file  the file-names correspond to the time of creation of the time buffer. YYYYMMDDHHSS.json. The spectrum frequency range can be calculated from the number of bins in the spectrum 
 
-NOTE: since the spectra are created by the cloud in case a spectrum with the requested setup is not already made for the requested recording we are recommending to use at least 0.5 seconds for time delay (use the time_delay setting in seconds)
+NOTE: since the spectra are created by the cloud server in case a spectrum with the requested setup is not already stored for the requested recording we are recommending to use at least 0.5 seconds for time delay.  (use the time_delay setting in seconds) Otherwise you may risk to overload the cloud server. Please note that selecting delete will not only delete the stored spectrum, but also delete the timerecording whereupon the spectrum is made. 
 
 
 ## Install
@@ -185,7 +185,7 @@ In order for the script to run - 2 files are required. The files must be locatat
     ``` 
     * "host" sets the server connections from the list of known hosts in the **hosts.json* file
     * "username" and "password" is the account login. If connecting to local the default username is 'local' and the password is 'pass'
-    * "delete_on_server", if true SPECTRA AND the TIME RECORDINGS WILL BE DELETED on the server 
+    * "delete_on_server", if true, both the SPECTRA AND the corresponding TIME RECORDINGS will be DELETED on the server 
     * "query_passed_days", query time range number of days back from current time
     * "query_passed_days", query time range number of days back from current time
     * "download_path", local download path, currently used by the download_spectra.py 
@@ -206,14 +206,3 @@ py ./download_recordings_tdms.py
 or
 
 py ./download_spectra.py
-
-
-
-
-
-
-
-    
-
-
-
