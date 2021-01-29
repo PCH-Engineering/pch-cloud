@@ -10,7 +10,8 @@ from datetime import datetime, timedelta
 import dateutil.parser
 import os
 import time
-
+import pathlib
+parentdir = pathlib.Path(__file__).parent 
 pp = pprint.PrettyPrinter(indent=4)
 
 

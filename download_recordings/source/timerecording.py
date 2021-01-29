@@ -6,7 +6,8 @@ import pprint
 import json
 import server_paths as url
 import os
-
+from pathlib import Path
+parentdir = Path(__file__).parents[1]
 def get_recording_tree(host, session_token):
     r = requests.get(url.backend(host)+"/timerecording/tree", data={'session_token': session_token}, verify=False)
     if r.status_code != requests.codes.ok:
@@ -50,7 +51,7 @@ def supported_export_formats(host,token):
 def export(host, session_token, deviceHostId, deviceId, recording_id, formatExt, path, overwrite=False):
 
     filename = recording_id.split('.')[-1]
-    local_path = os.path.join(path, host,"tdms", deviceHostId, deviceId)
+    local_path = parentdir.joinpath(path, host,"tdms", deviceHostId, deviceId)
     if not os.path.isdir(local_path): 
         os.makedirs(local_path)
     local_filename =os.path.join(local_path, filename+"."+formatExt)
@@ -110,12 +111,9 @@ def get_spectrum_names(host,session_token):
     spectra_names=r.json()
     return spectra_names  
     #OQ 
-def download_spectrum(host, session_token,  deviceHostId, deviceId, recording_id, spectrum_setup_name, channel=1,path="..\\spectra",overwrite=False):
-    print(recording_id)
-    #recordingid is a sort of timestamp
-    filename = recording_id.split('.')[-1]
-    
-    local_path = os.path.join(path,host,spectrum_setup_name, deviceHostId, deviceId,"channel_"+str(channel+1))
+def download_spectrum(host, session_token,  deviceHostId, deviceId, recording_id, spectrum_setup_name, channel=1,path="..\\spectra",overwrite=False):   
+    filename = recording_id.split('.')[-1]    
+    local_path =parentdir.joinpath(path,host,spectrum_setup_name, deviceHostId, deviceId,"channel_"+str(channel+1))
     formatExt="json"
     if not os.path.isdir(local_path): 
         os.makedirs(local_path)
@@ -127,7 +125,7 @@ def download_spectrum(host, session_token,  deviceHostId, deviceId, recording_id
     
     #Make request package
     data={'session_token': session_token, 'deviceHostId':deviceHostId, 'deviceId':deviceId,'recordingId':recording_id,'channel':channel,'name':spectrum_setup_name}
-    print(data)
+    #print(data)
     #Send the request
     r = requests.get(url.backend(host)+"/TimeRecording/recording/dataprocessing/spectrum", data=data, verify=False)
     if r.status_code != requests.codes.ok:

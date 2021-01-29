@@ -1,6 +1,11 @@
 import json
-
-with open('../config/hosts.json') as f:
+#import os
+#fn= os.path.abspath(__file__ +  "/../../")
+#hostfile =os.path.join(fn,'config/hosts.json')
+from pathlib import Path;
+parent = Path(__file__).parents[1]
+hostfile=parent.joinpath('config/hosts.json')
+with open(hostfile) as f:
     hosts = json.load(f)
 
 def service_url(host, service):
