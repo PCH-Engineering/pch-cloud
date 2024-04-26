@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  edgebackend:
+    image: public.ecr.aws/pch-engineering/1067/edgebackend:latest
+    ports:
+      - 5000:5000
+    restart: always
+    volumes:
+      - "./data:/root/PCH Engineering/1057 Condition Monitoring"
+    environment:
+      WEBAPP_TITLE : "Data Viewer"
+      REACT_APP_AUTOEXPORT: "enable" 
+      SYSTEM_TOKEN: "admin:admin"
+      SERVER_NAME: "pch-edge"
+      ASPNETCORE_URLS: "http://0.0.0.0:5000"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
