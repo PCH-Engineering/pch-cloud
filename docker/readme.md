@@ -7,7 +7,7 @@ pch-cloud docker image can be pulled from public.ecr.aws/pch-engineering/1067/ed
 | arm64      | public.ecr.aws/pch-engineering/1067/edgebackend_arm64 |
 
 ## Docker run 
-docker run -e ASPNETCORE_URLS='http://0.0.0.0:5000 -p 5000:5000 public.ecr.aws/pch-engineering/1067/edgebackend
+docker run -e ASPNETCORE_URLS='http://0.0.0.0:5000' -p 5000:5000 public.ecr.aws/pch-engineering/1067/edgebackend
 
 ## Docker compose
 Use the docker-compose.yml 
